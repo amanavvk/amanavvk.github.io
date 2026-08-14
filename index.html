@@ -1,261 +1,793 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Aman Vyas - Portfolio</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-        <link rel="stylesheet" href="assets/css/style.css">
+<meta charset="UTF-8" />
+<title>Aman Vyas — Backend & Distributed Systems Engineer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050806;
+    --panel:#080D09;
+    --panel-alt:#0B120C;
+    --line:#123320;
+    --line-bright:#1F5A34;
+    --green:#39FF7A;
+    --green-dim:#1F8B4A;
+    --green-soft:#8FE8AC;
+    --text:#B9E8C4;
+    --text-dim:#5A8368;
+    --red:#FF4C4C;
+    --mono: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+    --glow: 0 0 8px rgba(57,255,122,0.35);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--mono);
+    line-height:1.65;
+    overflow-x:hidden;
+    position:relative;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  ::selection{background:var(--green); color:#020402;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 28px;}
+
+  body::before{
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:999;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.22) 0px, rgba(0,0,0,0.22) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode:multiply; opacity:0.5;
+  }
+  body::after{
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:998;
+    background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 130%);
+  }
+
+  .term{ background:var(--panel); border:1px solid var(--line-bright); border-radius:0; }
+  .term-bar{ display:flex; align-items:center; gap:8px; padding:8px 12px; border-bottom:1px solid var(--line-bright); background:var(--panel-alt); }
+  .dot{width:9px; height:9px; border-radius:50%; background:var(--line-bright);}
+  .dot.r{background:#3a1414;} .dot.y{background:#3a3414;} .dot.g{background:var(--green-dim);}
+  .term-path{margin-left:10px; font-size:11px; color:var(--text-dim); letter-spacing:0.5px;}
+
+  nav{ position:sticky; top:0; z-index:50; background:rgba(5,8,6,0.9); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; height:58px;}
+  .logo{font-size:14px; color:var(--green); letter-spacing:0.5px;}
+  .logo .blink{animation:blink 1.1s step-end infinite;}
+  .navlinks{display:flex; gap:26px; font-size:12px; color:var(--text-dim);}
+  .navlinks a::before{content:'./'; color:var(--green-dim);}
+  .navlinks a:hover{color:var(--green); text-shadow:var(--glow);}
+  @media (max-width:640px){ .navlinks{display:none;} }
+  @keyframes blink{ 50%{opacity:0;} }
+
+  header.hero{ padding:70px 0 60px; border-bottom:1px solid var(--line); }
+  .boot-lines{font-size:12px; color:var(--text-dim); margin-bottom:26px;}
+  .boot-lines div{ opacity:0; animation:fadeIn 0.4s ease forwards; }
+  .boot-lines div:nth-child(1){animation-delay:0.1s;}
+  .boot-lines div:nth-child(2){animation-delay:0.5s;}
+  .boot-lines div:nth-child(3){animation-delay:0.9s;}
+  .boot-lines div:nth-child(4){animation-delay:1.3s;}
+  .boot-lines .ok{color:var(--green-dim);}
+  @keyframes fadeIn{ to{opacity:1;} }
+
+  h1.title{ font-size:clamp(30px, 5.6vw, 52px); font-weight:700; letter-spacing:-0.5px; color:var(--green); text-shadow:var(--glow); line-height:1.15; }
+  h1.title .prompt{color:var(--text-dim); font-weight:500;}
+  .subtitle{ margin-top:18px; font-size:14.5px; color:var(--text-dim); max-width:620px; }
+  .subtitle b{color:var(--green-soft); font-weight:600;}
+  .hero-meta{ margin-top:26px; display:flex; gap:22px; flex-wrap:wrap; font-size:12px; color:var(--text-dim); }
+  .hero-meta a:hover{color:var(--green);}
+  .relocate{ margin-top:18px; display:inline-block; font-size:11.5px; color:var(--green-dim); border:1px solid var(--line-bright); padding:6px 12px; }
+  .relocate b{color:var(--green-soft);}
+
+  section{padding:70px 0; border-bottom:1px solid var(--line);}
+  .sec-head{margin-bottom:34px;}
+  .sec-num{font-size:11px; color:var(--green-dim); letter-spacing:1px;}
+  h2.sec-title{ font-size:clamp(20px,3vw,28px); color:var(--green-soft); margin-top:6px; letter-spacing:-0.3px; }
+  .sec-sub{color:var(--text-dim); margin-top:8px; max-width:560px; font-size:13px;}
+
+  .about-grid{display:grid; grid-template-columns: 1.3fr 1fr; gap:28px;}
+  @media (max-width:800px){ .about-grid{grid-template-columns:1fr;} }
+  .term-body{padding:20px;}
+  .term-body p{color:var(--text-dim); font-size:13.5px; margin-bottom:14px;}
+  .term-body p b{color:var(--green-soft);}
+  .stat-row{display:flex; justify-content:space-between; padding:9px 0; border-bottom:1px dashed var(--line); font-size:12px;}
+  .stat-row:last-child{border-bottom:none;}
+  .stat-row b{color:var(--green); font-weight:600;}
+  .stat-row span:first-child::before{content:'> '; color:var(--green-dim);}
+
+  .project-card{ margin-bottom:26px; }
+  .project-body{ padding:24px; }
+  .project-tag{ font-size:11px; color:var(--green-dim); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:8px; }
+  .project-title{ font-size:19px; font-weight:700; color:var(--green-soft); margin-bottom:4px; }
+  .project-role{ color:var(--text-dim); font-size:12px; margin-bottom:16px; }
+  .project-desc{ color:var(--text-dim); font-size:13.5px; max-width:680px; margin-bottom:6px; }
+  .stack-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:16px;}
+  .chip{ font-size:11px; color:var(--green-dim); border:1px solid var(--line-bright); padding:3px 10px; }
+
+  .viz-frame{ border-top:1px solid var(--line-bright); margin-top:20px; padding-top:18px; }
+  .viz-caption{ margin-top:10px; font-size:11px; color:var(--text-dim); }
+  .viz-caption .green{color:var(--green);}
+
+  .grid-sim{ position:relative; overflow:hidden; background:#020402; border:1px solid var(--line); padding:14px; }
+  .cellgrid{ display:grid; grid-template-columns:repeat(20, 1fr); gap:3px; }
+  .cellgrid .cell{ aspect-ratio:1; background:#0C1710; animation:cellPulse 3.2s ease-in-out infinite; }
+  @keyframes cellPulse{ 0%, 100%{ background:#0C1710; } 50%{ background:var(--green-dim); } }
+  .cellgrid .cell:nth-child(3n){ animation-delay:0.2s; }
+  .cellgrid .cell:nth-child(4n){ animation-delay:0.5s; animation-duration:2.6s;}
+  .cellgrid .cell:nth-child(5n){ animation-delay:0.9s; }
+  .cellgrid .cell:nth-child(7n){ animation-delay:1.4s; animation-duration:3.8s;}
+  .cellgrid .cell:nth-child(11n){ animation-delay:0.35s; background:var(--green); }
+  .scanbar{ position:absolute; top:14px; bottom:14px; width:40px; background:linear-gradient(90deg, transparent, rgba(57,255,122,0.35), transparent); animation:scanmove 3.4s linear infinite; }
+  @keyframes scanmove{ 0%{left:-40px;} 100%{left:100%;} }
+
+  .procmon{ background:#020402; border:1px solid var(--line); padding:16px; font-size:12px; }
+  .proc-row{ display:flex; align-items:center; gap:10px; padding:8px 0; flex-wrap:wrap; }
+  .proc-pid{ color:var(--text-dim); width:90px; flex-shrink:0; }
+  .proc-name{ width:120px; flex-shrink:0; color:var(--green-soft); }
+  .proc-bar{ flex:1; min-width:160px; height:10px; background:#0C1710; border:1px solid var(--line-bright); position:relative; overflow:hidden; }
+  .proc-bar .fill{ position:absolute; top:0; left:0; bottom:0; background:var(--green-dim); }
+  .seq-fill{ animation:seqFill 5s ease-in-out infinite; }
+  @keyframes seqFill{ 0%{ width:0; background:var(--green-dim); } 55%{ width:78%; background:var(--green-dim); } 62%{ width:78%; background:var(--red); } 100%{ width:78%; background:var(--red); } }
+  .par-fill{ animation:parFill 5s ease-in-out infinite; }
+  @keyframes parFill{ 0%, 60%{ width:0; background:var(--green-dim); } 85%{ width:100%; background:var(--green); } 100%{ width:100%; background:var(--green); } }
+  .proc-status{ width:130px; flex-shrink:0; text-align:right; font-weight:600; }
+  .status-fail{ color:var(--red); opacity:0; animation:showFail 5s ease-in-out infinite; }
+  @keyframes showFail{ 0%,58%,100%{opacity:0;} 63%,90%{opacity:1;} }
+  .status-ok{ color:var(--green); opacity:0; animation:showOk 5s ease-in-out infinite; }
+  @keyframes showOk{ 0%,84%,100%{opacity:0;} 88%{opacity:1;} }
+
+  .logterm{ background:#020402; border:1px solid var(--line); padding:14px; font-size:11.5px; height:150px; overflow:hidden; position:relative; }
+  .logline{ color:var(--text-dim); opacity:0; animation:logIn 6s linear infinite; white-space:nowrap; }
+  .logline .tag{ color:var(--green-dim); }
+  .logline .ok{ color:var(--green); }
+  .logline:nth-child(1){ animation-delay:0s; }
+  .logline:nth-child(2){ animation-delay:0.6s; }
+  .logline:nth-child(3){ animation-delay:1.2s; }
+  .logline:nth-child(4){ animation-delay:1.8s; }
+  .logline:nth-child(5){ animation-delay:2.4s; }
+  .logline:nth-child(6){ animation-delay:3.0s; }
+  @keyframes logIn{ 0%{ opacity:0; transform:translateY(4px); } 6%{ opacity:1; transform:translateY(0); } 90%{ opacity:1; } 100%{ opacity:0; } }
+  .latency-row{ display:flex; gap:22px; margin-top:14px; font-size:12px; flex-wrap:wrap; }
+  .latency-box{ border:1px solid var(--line-bright); padding:10px 16px; }
+  .latency-box .num{ color:var(--green); font-size:20px; font-weight:700; }
+  .latency-box .lbl{ color:var(--text-dim); font-size:10.5px; letter-spacing:1px; text-transform:uppercase; }
+
+  /* --- KleeFlow plant simulation --- */
+  /* --- Kinodynamic RRT* planner --- */
+  .rrt-sim{ background:#020402; border:1px solid var(--line); padding:20px; }
+  .rrt-svg{ width:100%; height:auto; display:block; background:#040705; border:1px solid var(--line); }
+  .obstacle{ fill:#0C1710; stroke:var(--line-bright); stroke-width:1; }
+  .edge{ fill:none; stroke:var(--line-bright); stroke-width:1; stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset 0.35s linear; }
+  .rrt-sim.running .edge{ stroke-dashoffset:0; }
+  .edge:nth-child(4){ transition-delay:0.05s; } .edge:nth-child(5){ transition-delay:0.15s; }
+  .edge:nth-child(6){ transition-delay:0.2s; } .edge:nth-child(7){ transition-delay:0.3s; }
+  .edge:nth-child(8){ transition-delay:0.4s; } .edge:nth-child(9){ transition-delay:0.45s; }
+  .edge:nth-child(10){ transition-delay:0.55s; } .edge:nth-child(11){ transition-delay:0.6s; }
+  .edge:nth-child(12){ transition-delay:0.7s; } .edge:nth-child(13){ transition-delay:0.75s; }
+  .edge:nth-child(14){ transition-delay:0.85s; } .edge:nth-child(15){ transition-delay:0.9s; }
+  .edge:nth-child(16){ transition-delay:1s; } .edge:nth-child(17){ transition-delay:1.05s; }
+  .finalpath{
+    fill:none; stroke:var(--green); stroke-width:2; stroke-dasharray:1; stroke-dashoffset:1;
+    transition:stroke-dashoffset 1.1s ease; transition-delay:1.25s;
+    filter:drop-shadow(0 0 4px rgba(57,255,122,0.55));
+  }
+  .rrt-sim.running .finalpath{ stroke-dashoffset:0; }
+  .node-start{ fill:var(--green-soft); }
+  .node-goal{ fill:#0C1710; stroke:var(--green-dim); stroke-width:1; }
+  .rrt-sim.running .node-goal{ fill:var(--green); }
+  .rrt-label{ fill:var(--text-dim); font-size:7px; font-family:var(--mono); }
+  .rrt-num{ font-weight:700; }
+  .metric-row{ display:flex; gap:16px; margin-top:16px; flex-wrap:wrap; }
+  .metric-row .latency-box .num{ font-size:17px; }
+
+  /* --- KleeFlow plant simulation --- */
+  .plant-sim{ background:#020402; border:1px solid var(--line); padding:20px; }
+  .plant-row{ display:flex; align-items:flex-end; gap:8px; overflow-x:auto; padding-bottom:4px; }
+  .unit{ flex-shrink:0; width:130px; text-align:center; padding:10px 8px; border:1px solid var(--line); opacity:0.55; transition:opacity 0.4s, border-color 0.4s, box-shadow 0.4s; }
+  .plant-sim.running .unit{ opacity:1; border-color:var(--line-bright); box-shadow:0 0 14px rgba(57,255,122,0.12); }
+  .unit-icon{ width:100%; height:56px; }
+  .unit-label{ font-size:10px; letter-spacing:0.5px; color:var(--green-soft); margin-top:6px; }
+  .unit-status{ font-size:9.5px; color:var(--text-dim); margin-top:3px; letter-spacing:1px; }
+  .plant-sim.running .unit-status{ color:var(--green); }
+  .unit-status::before{ content:'● '; }
+  .unit-tph{ font-size:11px; color:var(--text-dim); margin-top:5px; }
+  .plant-sim.running .unit-tph{ color:var(--green-soft); }
+  .tph-num{ font-weight:700; }
+  .conveyor{ flex-shrink:0; width:44px; height:8px; background:#0C1710; border:1px solid var(--line); align-self:center; margin-bottom:24px; overflow:hidden; position:relative; }
+  .conveyor .belt{ position:absolute; inset:0; background-image:repeating-linear-gradient(90deg, var(--line-bright) 0 6px, transparent 6px 12px); background-size:24px 100%; }
+  .plant-sim.running .conveyor .belt{ animation:beltmove 0.6s linear infinite; }
+  @keyframes beltmove{ to{ background-position:-24px 0; } }
+  .output-unit{ width:150px; }
+  .pile-readout{ display:flex; flex-direction:column; gap:2px; font-size:9.5px; color:var(--text-dim); margin-top:6px; }
+  .pile-readout b{ color:var(--text-dim); }
+  .plant-sim.running .pile-readout b{ color:var(--green); }
+  .pile{ transform-origin:bottom; transform:scaleY(0.12); transition:transform 1.1s cubic-bezier(.2,.8,.3,1); }
+  .plant-sim.running .pile{ transform:scaleY(1); }
+  .plant-sim.running #pile-1{ transition-delay:0.15s; }
+  .plant-sim.running #pile-2{ transition-delay:0.3s; }
+  .arm-group{ transform:rotate(0deg); }
+  .plant-sim.running .arm-group{ animation:scoop 1.7s ease-in-out infinite; }
+  @keyframes scoop{ 0%,100%{ transform:rotate(0deg); } 50%{ transform:rotate(-14deg); } }
+  .arm-fore{ transform:rotate(0deg); }
+  .plant-sim.running .arm-fore{ animation:scoopfore 1.7s ease-in-out infinite; }
+  @keyframes scoopfore{ 0%,100%{ transform:rotate(0deg); } 50%{ transform:rotate(18deg); } }
+  .vibrate{ transform:translateY(0); }
+  .plant-sim.running .vibrate{ animation:vib 0.15s linear infinite; }
+  @keyframes vib{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(1.5px); } }
+  .jaw{ transform:scaleY(1); transform-origin:top; }
+  .plant-sim.running .jaw{ animation:crush 0.9s ease-in-out infinite; }
+  @keyframes crush{ 0%,100%{ transform:scaleY(1); } 50%{ transform:scaleY(0.35); } }
+
+  .plant-controls{ display:flex; align-items:center; gap:16px; margin-top:22px; flex-wrap:wrap; }
+  .run-btn{
+    font-family:var(--mono); font-size:12px; letter-spacing:1px; background:transparent;
+    color:var(--green); border:1px solid var(--green-dim); padding:10px 20px; cursor:pointer;
+    transition:background 0.2s, color 0.2s, box-shadow 0.2s;
+  }
+  .run-btn:hover{ box-shadow:0 0 12px rgba(57,255,122,0.3); }
+  .run-btn:disabled{ background:var(--green-dim); color:#020402; cursor:default; opacity:0.9; }
+  .plant-hint{ font-size:11px; color:var(--text-dim); max-width:360px; }
+  .plant-log{ margin-top:16px; height:120px; }
+  .plant-log .logline{ animation:none; opacity:0; transform:translateY(4px); transition:opacity 0.3s, transform 0.3s; }
+  .plant-log .logline.show{ opacity:1; transform:translateY(0); }
+
+  .proj-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media (max-width:900px){ .proj-grid{grid-template-columns:1fr;} }
+  .mini-body{ padding:18px; }
+  .mini-icon{ height:44px; margin-bottom:14px; }
+  .mini-title{ font-size:14px; font-weight:700; color:var(--green-soft); margin-bottom:8px; }
+  .mini-desc{ font-size:12px; color:var(--text-dim); }
+  .flowdot{ animation:flow 2.4s linear infinite; }
+  .flowdot:nth-child(2){ animation-delay:0.3s; }
+  .flowdot:nth-child(3){ animation-delay:0.6s; }
+  .flowdot:nth-child(4){ animation-delay:0.9s; }
+  @keyframes flow{ 0%{ transform:translateX(0); opacity:0; } 10%{ opacity:1; } 90%{ opacity:1; } 100%{ transform:translateX(120px); opacity:0; } }
+  .pulse{ transform-origin:center; animation:pulse 2.2s ease-out infinite; }
+  @keyframes pulse{ 0%{ r:4; opacity:0.9; } 100%{ r:22; opacity:0; } }
+  .funneldrop{ animation:drop 2s ease-in infinite; }
+  .funneldrop:nth-child(2){ animation-delay:0.4s; }
+  .funneldrop:nth-child(3){ animation-delay:0.8s; }
+  @keyframes drop{ 0%{ transform:translateY(0); opacity:0; } 15%{ opacity:1; } 100%{ transform:translateY(24px); opacity:0; } }
+
+  .timeline .term-body{padding:20px;}
+  .tl-item{ padding:14px 0; border-bottom:1px dashed var(--line); }
+  .tl-item:last-child{ border-bottom:none; }
+  .tl-head{display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:6px; font-size:12.5px;}
+  .tl-role{ color:var(--green-soft); font-weight:700; }
+  .tl-role::before{ content:'[LOG] '; color:var(--green-dim); font-weight:400; }
+  .tl-date{ color:var(--text-dim); }
+  .tl-co{ color:var(--green-dim); font-size:11.5px; margin-bottom:8px; }
+  .tl-item ul{ padding-left:16px; color:var(--text-dim); font-size:12.5px; }
+  .tl-item li{ margin-bottom:5px; }
+  .tl-item li::marker{ color:var(--green-dim); content:'» '; }
+
+  .skill-groups{display:grid; grid-template-columns:repeat(2,1fr); gap:22px 32px; padding:22px;}
+  @media (max-width:700px){ .skill-groups{grid-template-columns:1fr;} }
+  .skill-group-label{ font-size:11px; color:var(--green-dim); text-transform:uppercase; letter-spacing:1px; margin-bottom:9px; }
+  .skill-group-label::before{content:'$ ls ';}
+  .skill-tags{display:flex; flex-wrap:wrap; gap:7px;}
+
+  .award-row{display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-bottom:1px dashed var(--line); font-size:12.5px;}
+  .award-row:last-child{border-bottom:none;}
+  .award-mark{ color:var(--green-dim); padding-top:2px; }
+  .award-title{ font-weight:700; color:var(--green-soft); }
+  .award-desc{ color:var(--text-dim); font-size:12px; margin-top:2px; }
+
+  footer{padding:50px 0; text-align:center;}
+  footer .foot-title{ font-size:20px; color:var(--green); text-shadow:var(--glow); margin-bottom:14px; }
+  footer .foot-links{display:flex; justify-content:center; gap:20px; font-size:12px; color:var(--text-dim); flex-wrap:wrap;}
+  footer .foot-links a:hover{color:var(--green);}
+  footer .copy{margin-top:30px; font-size:10.5px; color:#3c5548;}
+</style>
 </head>
 <body>
-        <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-                <div class="container">
-                        <a class="navbar-brand" href="#hero">Aman Vyas</a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                                <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarNav">
-                                <ul class="navbar-nav ms-auto">
-                                        <li class="nav-item"><a class="nav-link" href="#hero">Home</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#resume">Resume</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#certifications">Certifications</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                                </ul>
-                        </div>
-                </div>
-        </nav>
-        <!-- Hero Section -->
-        <section id="hero" class="hero-section d-flex align-items-center">
-                <div class="container text-center">
-                        <img src="assets/img/profile-img.png" alt="Profile Picture" class="img-fluid rounded-circle mb-3" width="150">
-                        <h1>Aman Vyas</h1>
-                        <p class="lead"><span id="typed-text"></span><span class="cursor">|</span></p>
-                        <a href="#about" class="btn btn-primary">Learn More</a>
-                </div>
-        </section>
 
-        <!-- About Section -->
-        <section id="about" class="py-5" data-aos="fade-up">
-                <div class="container">
-                        <h2>About</h2>
-                        <div class="row">
-                                <div class="col-md-3 text-center">
-                                        <img src="assets/img/profile-img.png" alt="Profile Picture" class="img-fluid rounded-circle" data-aos="zoom-in">
-                                </div>
-                                <div class="col-md-9 d-flex align-items-center">
-                                        <p class="text-center">Ambitious and results-driven Computer Science professional with a passion for software development, data science, and research. Experienced in building scalable solutions and thriving in collaborative environments. Eager to leverage my diverse skill set to solve complex problems and deliver high-impact solutions.</p>
-                                </div>
-                        </div>
-                </div>
-        </section>
-    <!-- Skills Section -->
-    <section id="skills" class="py-5 bg-light" data-aos="fade-up">
-        <div class="container">
-            <h2>Skills</h2>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="skill mb-3">
-                        <h5>Java <span class="percentage">90%</span></h5>
-                        <div class="progress">
-                            <div class="progress-bar" data-width="90"></div>
-                        </div>
-                    </div>
-                    <div class="skill mb-3">
-                        <h5>Python <span class="percentage">85%</span></h5>
-                        <div class="progress">
-                            <div class="progress-bar" data-width="85"></div>
-                        </div>
-                    </div>
-                    <div class="skill mb-3">
-                        <h5>C++ <span class="percentage">80%</span></h5>
-                        <div class="progress">
-                            <div class="progress-bar" data-width="80"></div>
-                        </div>
-                    </div>
-                    <div class="skill mb-3">
-                        <h5>React.js <span class="percentage">75%</span></h5>
-                        <div class="progress">
-                            <div class="progress-bar" data-width="75"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="skill mb-3">
-                        <h5>Node.js <span class="percentage">70%</span></h5>
-                        <div class="progress">
-                            <div class="progress-bar" data-width="70"></div>
-                        </div>
-                    </div>
-                    <div class="skill mb-3">
-                        <h5>AWS <span class="percentage">75%</span></h5>
-                        <div class="progress">
-                            <div class="progress-bar" data-width="75"></div>
-                        </div>
-                    </div>
-                    <div class="skill mb-3">
-                        <h5>SQL <span class="percentage">80%</span></h5>
-                        <div class="progress">
-                            <div class="progress-bar" data-width="80"></div>
-                        </div>
-                    </div>
-                    <div class="skill mb-3">
-                        <h5>MongoDB <span class="percentage">70%</span></h5>
-                        <div class="progress">
-                            <div class="progress-bar" data-width="70"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<nav>
+  <div class="wrap">
+    <div class="logo">vyas@core:~$<span class="blink">_</span></div>
+    <div class="navlinks">
+      <a href="#projects">projects</a>
+      <a href="#experience">experience</a>
+      <a href="#skills">skills</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="boot-lines">
+      <div>&gt; booting profile.sys ...</div>
+      <div>&gt; loading modules: [spring-boot] [kafka] [k8s] [postgres] [redis]</div>
+      <div>&gt; scanning location constraints ... <span class="ok">NONE FOUND</span></div>
+      <div>&gt; status: <span class="ok">READY</span></div>
+    </div>
+
+    <h1 class="title"><span class="prompt">&gt;</span> Aman Vyas — backend engineer who ships distributed systems from zero to prod.</h1>
+    <p class="subtitle">3.5+ years building event-driven microservices, payment infrastructure, and AI-powered platforms — as the <b>founding backend engineer</b>, twice.</p>
+
+    <div class="relocate">RELOCATION: <b>OPEN — WORLDWIDE</b> · US · UK · EU · UAE · AUS · CA</div>
+
+    <div class="hero-meta">
+      <a href="mailto:amanvyas055@gmail.com">amanvyas055@gmail.com</a>
+      <a href="tel:+917284935089">+91 7284935089</a>
+      <a href="#">linkedin</a>
+      <a href="https://github.com/amanavvk" target="_blank">github</a>
+      <a href="#">leetcode</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section id="about">
+    <div class="wrap about-grid">
+      <div class="term">
+        <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-path">~/about.txt</span></div>
+        <div class="term-body">
+          <p><b>&gt;</b> I design distributed systems, event-driven microservices, and cloud-native platforms — most often as the first backend hire on a greenfield product.</p>
+          <p><b>&gt;</b> At BARQ, that meant owning merchant payments from a blank repo. At John Deere, it meant building an industrial machine-simulation platform (KleeFlow) and the AI agent that runs on top of it.</p>
+          <p><b>&gt;</b> Core stack: Java + Spring Boot, wired together with Kafka, Kubernetes, PostgreSQL, and Redis — with a growing focus on running LLMs and inference systems reliably inside production backends.</p>
         </div>
-    </section>
-    <!-- Resume Section -->
-    <section id="resume" class="py-5" data-aos="fade-up">
-        <div class="container">
-            <h2>Resume</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h3>Education</h3>
-                        <h4>[Your University]</h4>
-                        <p>Master of Science in Computer Science</p>
-                        <p>Jan 2024 - Dec 2025</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h4>[Your University]</h4>
-                        <p>Bachelor of Technology in Computer Science and Engineering</p>
-                        <p>July 2019 - May 2023</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h4>Software Engineer Intern, Oracle America, Inc.</h4>
-                        <p>May 2025 - Aug 2025</p>
-                        <ul>
-                            <li>Consolidated loggers to enhance system efficiency.</li>
-                            <li>Developed product metrics and dynamic dashboards for data-driven decision-making.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h4>Data Science Intern, Applus IDIADA</h4>
-                        <p>Jan 2023 - Jun 2023</p>
-                        <ul>
-                            <li>Preprocessed crash simulation data using ML algorithms.</li>
-                            <li>Improved material selection and vehicle safety.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h4>STEM Researcher, USC Viterbi School of Engineering</h4>
-                        <p>Apr 2024 - Aug 2024</p>
-                        <ul>
-                            <li>Led NSF-funded project for assistive technologies.</li>
-                            <li>Launched accessible website for disabled individuals.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="term">
+        <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-path">~/stats.log</span></div>
+        <div class="term-body">
+          <div class="stat-row"><span>experience</span><b>3.5+ yrs</b></div>
+          <div class="stat-row"><span>founding-engineer stints</span><b>2</b></div>
+          <div class="stat-row"><span>core_language</span><b>java</b></div>
+          <div class="stat-row"><span>event_reliability [syncforge]</span><b>99.99%</b></div>
+          <div class="stat-row"><span>latency_improved [deere]</span><b>-20%</b></div>
+          <div class="stat-row"><span>education</span><b>b.tech · nit surat</b></div>
         </div>
-    </section>
-    <!-- Projects Section -->
-        <section id="projects" class="py-5 bg-light">
-            <div class="container">
-                <h2 class="mb-4"><i class="fa fa-project-diagram"></i> Projects</h2>
-                <div class="row">
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <img src="assets/img/project-placeholder.png" class="card-img-top" alt="Plastic Object Detection">
-                            <div class="card-body">
-                                <h5 class="card-title">Plastic Object Detection</h5>
-                                <p class="card-text">Developed a machine learning model to detect plastic objects in images, improving environmental monitoring.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <img src="assets/img/project-placeholder.png" class="card-img-top" alt="Stock Prediction">
-                            <div class="card-body">
-                                <h5 class="card-title">Stock Prediction</h5>
-                                <p class="card-text">Implemented time series analysis and prediction models for stock market trends using Python and ML algorithms.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <img src="assets/img/project-placeholder.png" class="card-img-top" alt="Covid Patient Monitoring">
-                            <div class="card-body">
-                                <h5 class="card-title">Covid Patient Monitoring</h5>
-                                <p class="card-text">Built a web dashboard for real-time monitoring and analysis of Covid patient data, supporting healthcare decisions.</p>
-                            </div>
-                        </div>
-                    </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-num">02 — FEATURED_WORK</div>
+        <h2 class="sec-title">Systems built from nothing.</h2>
+        <p class="sec-sub">Three builds — pulled apart into what actually happened under the hood.</p>
+      </div>
+
+      <div class="project-card term">
+        <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-path">~/projects/kleeflow</span></div>
+        <div class="project-body">
+          <div class="project-tag">founding engineer · john deere</div>
+          <div class="project-title">KleeFlow — Aggregate Production Line Simulation</div>
+          <div class="project-role">industrial automation · jul 2023 – may 2026</div>
+          <p class="project-desc">Simulation software that models a full crushing-and-screening plant — excavator, mobile screener, mobile crusher — before any machine touches a quarry. Built the core Spring Boot services and simulation backend from scratch, then shipped an AI agent that runs the machines with real-time decisioning and self-recovery. The engine originally staged each unit sequentially and timed out under load; rearchitected so the whole plant simulates in parallel, which is what shipped.</p>
+          <div class="stack-row">
+            <span class="chip">spring-boot</span><span class="chip">kafka</span><span class="chip">airflow</span>
+            <span class="chip">bert/bart</span><span class="chip">postgresql</span><span class="chip">kubernetes</span>
+          </div>
+
+          <div class="viz-frame">
+            <div class="plant-sim" id="plant">
+              <div class="plant-row">
+
+                <div class="unit" id="u-exc">
+                  <svg class="unit-icon" viewBox="0 0 90 70">
+                    <rect x="10" y="46" width="34" height="14" rx="2" fill="#0C1710" stroke="var(--line-bright)"/>
+                    <polygon points="6,60 48,60 42,66 12,66" fill="#0C1710" stroke="var(--line-bright)"/>
+                    <circle cx="14" cy="66" r="4" fill="#0C1710" stroke="var(--green-dim)"/>
+                    <circle cx="24" cy="66" r="4" fill="#0C1710" stroke="var(--green-dim)"/>
+                    <circle cx="34" cy="66" r="4" fill="#0C1710" stroke="var(--green-dim)"/>
+                    <rect x="18" y="34" width="16" height="14" rx="2" fill="#0C1710" stroke="var(--green-dim)"/>
+                    <g class="arm-group" style="transform-origin:30px 40px;">
+                      <line x1="30" y1="40" x2="58" y2="24" stroke="var(--green-dim)" stroke-width="4"/>
+                      <g class="arm-fore" style="transform-origin:58px 24px;">
+                        <line x1="58" y1="24" x2="48" y2="10" stroke="var(--green-dim)" stroke-width="3.5"/>
+                        <path class="bucket" d="M48,10 L40,14 L42,22 L50,20 Z" fill="#0C1710" stroke="var(--green)" stroke-width="1.5"/>
+                      </g>
+                    </g>
+                  </svg>
+                  <div class="unit-label">EXCAVATOR</div>
+                  <div class="unit-status">IDLE</div>
+                  <div class="unit-tph"><span class="tph-num" data-target="180">0</span> TPH</div>
                 </div>
-            </div>
-        </section>
-    </section>
-    <!-- Publications Section -->
-        <section id="publications" class="py-5">
-            <div class="container">
-                <h2 class="mb-4"><i class="fa fa-book"></i> Publications</h2>
-                <ul class="list-group">
-                    <li class="list-group-item">Machine Learning and Neural Network Models for Customer Churn Prediction in Banking and Telecom Sectors, Springer Nature, 2025</li>
-                    <li class="list-group-item">A Survey on Security Threats in Cloud Computing Service Models, IEEE, 2024</li>
-                </ul>
-            </div>
-        </section>
-    </section>
-    <!-- Certifications Section -->
-        <section id="certifications" class="py-5 bg-light">
-            <div class="container">
-                <h2 class="mb-4"><i class="fa fa-certificate"></i> Certifications</h2>
-                <ul class="list-group">
-                    <li class="list-group-item">The Web Developer Bootcamp, Udemy, 2024</li>
-                    <li class="list-group-item">Big Data - Specialization, Coursera, 2024</li>
-                    <li class="list-group-item">Python for Everybody - Specialization, Coursera, 2023</li>
-                </ul>
-            </div>
-        </section>
-    </section>
-    <!-- Extra-curricular Activities Section -->
-        <section id="extra-curriculars" class="py-5">
-            <div class="container">
-                <h2 class="mb-4"><i class="fa fa-users"></i> Extra-curricular Activities</h2>
-                <ul class="list-group">
-                    <li class="list-group-item">C/C++ Tutor, Computer Society of India, 2023</li>
-                    <li class="list-group-item">Content Team Head, Society of Women Engineers, 2024</li>
-                    <li class="list-group-item">Delegate, Model United Nations, 2022</li>
-                    <li class="list-group-item">Volunteer, National Cadet Corps (NCC), 2021-2022</li>
-                </ul>
-            </div>
-        </section>
-    <!-- Contact Section -->
-        <section id="contact" class="py-5 bg-light">
-            <div class="container">
-                <h2 class="mb-4"><i class="fa fa-envelope"></i> Contact</h2>
-                <div class="row">
-                    <div class="col-md-6">
-                        <p><i class="fa fa-envelope"></i> Email: amanvyas@email.com</p>
-                        <p><i class="fa fa-map-marker-alt"></i> Location: Los Angeles, California</p>
-                    </div>
+
+                <div class="conveyor"><div class="belt"></div></div>
+
+                <div class="unit" id="u-scr">
+                  <svg class="unit-icon" viewBox="0 0 90 70">
+                    <polygon points="10,50 80,50 68,60 22,60" fill="#0C1710" stroke="var(--line-bright)"/>
+                    <g class="vibrate">
+                      <rect x="16" y="24" width="58" height="24" rx="2" fill="#0C1710" stroke="var(--green-dim)"/>
+                      <line x1="20" y1="34" x2="70" y2="34" stroke="var(--green-dim)" stroke-dasharray="3 3"/>
+                      <line x1="20" y1="42" x2="70" y2="42" stroke="var(--green-dim)" stroke-dasharray="3 3"/>
+                    </g>
+                    <line x1="24" y1="50" x2="18" y2="60" stroke="var(--line-bright)" stroke-width="3"/>
+                    <line x1="66" y1="50" x2="72" y2="60" stroke="var(--line-bright)" stroke-width="3"/>
+                  </svg>
+                  <div class="unit-label">MOBILE SCREENER</div>
+                  <div class="unit-status">IDLE</div>
+                  <div class="unit-tph"><span class="tph-num" data-target="165">0</span> TPH</div>
                 </div>
+
+                <div class="conveyor"><div class="belt"></div></div>
+
+                <div class="unit" id="u-crs">
+                  <svg class="unit-icon" viewBox="0 0 90 70">
+                    <polygon points="12,52 78,52 66,62 24,62" fill="#0C1710" stroke="var(--line-bright)"/>
+                    <rect x="20" y="18" width="50" height="34" rx="2" fill="#0C1710" stroke="var(--green-dim)"/>
+                    <g class="jaw-group" style="transform-origin:45px 26px;">
+                      <polygon points="26,24 64,24 58,40 32,40" fill="none" stroke="var(--green-dim)" stroke-width="2"/>
+                      <line x1="45" y1="24" x2="45" y2="40" stroke="var(--green)" stroke-width="2" class="jaw"/>
+                    </g>
+                  </svg>
+                  <div class="unit-label">MOBILE CRUSHER</div>
+                  <div class="unit-status">IDLE</div>
+                  <div class="unit-tph"><span class="tph-num" data-target="140">0</span> TPH</div>
+                </div>
+
+                <div class="conveyor"><div class="belt"></div></div>
+
+                <div class="unit output-unit">
+                  <svg class="unit-icon" viewBox="0 0 120 70">
+                    <line x1="4" y1="60" x2="116" y2="60" stroke="var(--line-bright)"/>
+                    <polygon class="pile" id="pile-0" points="14,60 30,60 22,32" fill="var(--green-dim)"/>
+                    <polygon class="pile" id="pile-1" points="46,60 66,60 56,24" fill="var(--green-dim)"/>
+                    <polygon class="pile" id="pile-2" points="82,60 106,60 94,34" fill="var(--green-dim)"/>
+                  </svg>
+                  <div class="unit-label">STOCKPILE</div>
+                  <div class="pile-readout">
+                    <span>0–5mm <b class="tph-num" data-target="95">0</b></span>
+                    <span>5–20mm <b class="tph-num" data-target="30">0</b></span>
+                    <span>20–40mm <b class="tph-num" data-target="15">0</b></span>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="plant-controls">
+                <button class="run-btn" id="run-btn">▶ RUN SIMULATION</button>
+                <span class="plant-hint">simulates the full production line in parallel — excavator, screener, and crusher activate together</span>
+              </div>
+
+              <div class="logterm plant-log" id="plant-log"></div>
             </div>
-        </section>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/main.js"></script>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card term">
+        <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-path">~/projects/pay-by-barq</span></div>
+        <div class="project-body">
+          <div class="project-tag">founding engineer · barq</div>
+          <div class="project-title">Pay by BARQ — Merchant Payments Platform</div>
+          <div class="project-role">fintech · may 2026 – present</div>
+          <p class="project-desc">Greenfield merchant payments product — owned backend architecture from zero to production across onboarding, KYC/compliance, settlements, disbursements, and cash-in workflows. Async transaction pipelines on Kafka and Airflow, tuned for throughput and reliability under production load.</p>
+          <div class="stack-row">
+            <span class="chip">spring-boot</span><span class="chip">kafka</span><span class="chip">kyc/compliance</span>
+            <span class="chip">redis</span><span class="chip">postgresql</span><span class="chip">kubernetes</span>
+          </div>
+          <div class="viz-frame">
+            <div class="logterm" id="barq-log">
+              <div class="logline"><span class="tag">[txn]</span> merchant_onboard(id=884213) <span class="ok">→ verified</span></div>
+              <div class="logline"><span class="tag">[kyc]</span> compliance_check(merchant=884213) <span class="ok">→ passed</span></div>
+              <div class="logline"><span class="tag">[kafka]</span> settlement.topic → partition 4 ack'd</div>
+              <div class="logline"><span class="tag">[cache]</span> redis: session hit ratio 97.2%</div>
+              <div class="logline"><span class="tag">[db]</span> postgres: index scan optimized, -20% p99</div>
+              <div class="logline"><span class="tag">[disburse]</span> batch #4471 <span class="ok">→ settled</span></div>
+            </div>
+            <div class="latency-row">
+              <div class="latency-box"><div class="num">-20%</div><div class="lbl">p99 latency</div></div>
+              <div class="latency-box"><div class="num">↑ read+write</div><div class="lbl">throughput, both paths</div></div>
+              <div class="latency-box"><div class="num">k8s</div><div class="lbl">scaled under load</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card term">
+        <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-path">~/projects/kinodynamic-rrt</span></div>
+        <div class="project-body">
+          <div class="project-tag">personal project · motion planning</div>
+          <div class="project-title">Kinodynamic RRT* — Quadrotor Trajectory Planner</div>
+          <div class="project-role">from-scratch C++17 · double-integrator dynamics</div>
+          <p class="project-desc">A from-scratch C++17 motion planner for a double-integrator quadrotor: a closed-form optimal boundary-value solution (depressed-quartic arrival time) serves as both the steering function and the RRT* cost metric, with choose-parent/rewiring for asymptotic optimality. Success rate climbs from 15% to 100% and mean path cost drops from 26.9 to 24.5 as the iteration budget grows, producing dynamically feasible curved 3D trajectories through obstacle fields. Ships with an interactive Dear ImGui/raylib editor with background-thread replanning, a headless OpenCV renderer for CI, 27 GoogleTest unit tests, and a GitHub Actions matrix across GCC/Clang.</p>
+          <div class="stack-row">
+            <span class="chip">c++17</span><span class="chip">cmake</span><span class="chip">eigen3</span>
+            <span class="chip">dear imgui</span><span class="chip">raylib</span><span class="chip">opencv</span>
+            <span class="chip">googletest</span><span class="chip">github actions</span>
+          </div>
+
+          <div class="viz-frame">
+            <div class="rrt-sim" id="rrt">
+              <svg class="rrt-svg" viewBox="0 0 300 160">
+                <rect x="97" y="105" width="34" height="22" rx="2" class="obstacle"/>
+                <rect x="155" y="86" width="28" height="22" rx="2" class="obstacle"/>
+                <rect x="198" y="66" width="22" height="18" rx="2" class="obstacle"/>
+
+                <path class="edge" d="M20,140 L55,120" pathLength="1"/>
+                <path class="edge" d="M55,120 L90,130" pathLength="1"/>
+                <path class="edge" d="M90,130 L128,142" pathLength="1"/>
+                <path class="edge" d="M55,120 L85,95" pathLength="1"/>
+                <path class="edge" d="M85,95 L120,102" pathLength="1"/>
+                <path class="edge" d="M85,95 L115,70" pathLength="1"/>
+                <path class="edge" d="M115,70 L150,80" pathLength="1"/>
+                <path class="edge" d="M150,80 L184,96" pathLength="1"/>
+                <path class="edge" d="M115,70 L145,50" pathLength="1"/>
+                <path class="edge" d="M145,50 L180,60" pathLength="1"/>
+                <path class="edge" d="M145,50 L178,35" pathLength="1"/>
+                <path class="edge" d="M178,35 L210,45" pathLength="1"/>
+                <path class="edge" d="M178,35 L205,25" pathLength="1"/>
+                <path class="edge" d="M205,25 L240,30" pathLength="1"/>
+
+                <path class="finalpath" pathLength="1" d="M20,140 C50,124 55,120 55,120 C75,110 85,95 85,95 C100,84 115,70 115,70 C130,60 145,50 145,50 C160,42 178,35 178,35 C192,29 205,25 205,25 C220,27 240,30 240,30 C255,26 280,20 280,20"/>
+
+                <circle cx="20" cy="140" r="4.5" class="node-start"/>
+                <circle cx="280" cy="20" r="4.5" class="node-goal"/>
+                <text x="10" y="153" class="rrt-label">START</text>
+                <text x="256" y="14" class="rrt-label">GOAL</text>
+              </svg>
+
+              <div class="metric-row">
+                <div class="latency-box"><div class="num"><span class="rrt-num" id="rrt-success" data-from="15" data-to="100" data-dec="0">15</span>%</div><div class="lbl">success rate</div></div>
+                <div class="latency-box"><div class="num"><span class="rrt-num" id="rrt-cost" data-from="26.9" data-to="24.5" data-dec="1">26.9</span></div><div class="lbl">mean path cost</div></div>
+                <div class="latency-box"><div class="num"><span class="rrt-num" id="rrt-iter" data-from="0" data-to="5000" data-dec="0">0</span></div><div class="lbl">iterations</div></div>
+              </div>
+
+              <div class="plant-controls">
+                <button class="run-btn" id="rrt-btn">▶ RUN PLANNER</button>
+                <span class="plant-hint">grows the RRT* tree with choose-parent + rewiring, then converges on the lowest-cost feasible trajectory</span>
+              </div>
+
+              <div class="logterm plant-log" id="rrt-log"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-num">03 — MORE_BUILDS</div>
+        <h2 class="sec-title">Side projects, current.</h2>
+      </div>
+      <div class="proj-grid">
+        <div class="mini-body term">
+          <svg class="mini-icon" viewBox="0 0 200 44"><rect x="0" y="18" width="8" height="8" fill="var(--green-dim)"/><circle class="flowdot" cx="16" cy="22" r="2.5" fill="var(--green)"/><circle class="flowdot" cx="16" cy="22" r="2.5" fill="var(--green)"/><circle class="flowdot" cx="16" cy="22" r="2.5" fill="var(--green)"/><rect x="172" y="18" width="8" height="8" fill="var(--green-dim)"/></svg>
+          <div class="mini-title">SyncForge</div>
+          <div class="mini-desc">Transactional Outbox pattern with Kafka + Debezium CDC. Idempotent consumers, retries, dead-letter queues — 99.99% event reliability.</div>
+        </div>
+        <div class="mini-body term">
+          <svg class="mini-icon" viewBox="0 0 200 44"><circle cx="60" cy="22" r="3.5" fill="var(--red)"/><circle class="pulse" cx="60" cy="22" r="3.5" fill="none" stroke="var(--red)" stroke-width="1.3"/></svg>
+          <div class="mini-title">FinPilot AI</div>
+          <div class="mini-desc">Event-driven payment platform with a Graph Neural Network fraud-detection engine for real-time risk scoring, Redis-backed.</div>
+        </div>
+        <div class="mini-body term">
+          <svg class="mini-icon" viewBox="0 0 200 44"><polygon points="80,6 118,6 104,34 94,34" fill="#0C1710" stroke="var(--green-dim)"/><circle class="funneldrop" cx="99" cy="8" r="2" fill="var(--green)"/><circle class="funneldrop" cx="99" cy="8" r="2" fill="var(--green)"/><circle class="funneldrop" cx="99" cy="8" r="2" fill="var(--green)"/></svg>
+          <div class="mini-title">HireTale ETL</div>
+          <div class="mini-desc">AI-powered hiring platform on Quarkus + GraphQL + Hibernate, automated ETL pipelines — 70% less manual effort.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap timeline">
+      <div class="sec-head">
+        <div class="sec-num">04 — EXPERIENCE</div>
+        <h2 class="sec-title">Where I've built.</h2>
+      </div>
+      <div class="term">
+        <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-path">~/experience.log</span></div>
+        <div class="term-body">
+          <div class="tl-item">
+            <div class="tl-head"><span class="tl-role">Software Development Engineer 2</span><span class="tl-date">May 2026 – Present</span></div>
+            <div class="tl-co">BARQ · Bangalore, India</div>
+            <ul>
+              <li>Founding engineer for Pay by BARQ — merchant payments backend, zero to production.</li>
+              <li>Event-driven Spring Boot microservices across auth, onboarding, KYC/compliance, core-banking workflows.</li>
+              <li>Async transaction pipelines with Kafka and Airflow for reconciliation and scheduled payments.</li>
+            </ul>
+          </div>
+          <div class="tl-item">
+            <div class="tl-head"><span class="tl-role">Senior Software Engineer</span><span class="tl-date">Jul 2023 – May 2026</span></div>
+            <div class="tl-co">John Deere · Pune, India</div>
+            <ul>
+              <li>Founding engineer of KleeFlow, a road-building machine simulation platform — core Spring Boot services and simulation backend.</li>
+              <li>Shipped an AI agent for autonomous machine operations with real-time decisioning and self-recovery.</li>
+              <li>Integrated BERT/BART inference into the Java backend via Python orchestration, Kafka, and Airflow.</li>
+              <li>Improved API latency 20% through PostgreSQL tuning, Redis caching, and indexing.</li>
+            </ul>
+          </div>
+          <div class="tl-item">
+            <div class="tl-head"><span class="tl-role">Software Development Engineer Intern</span><span class="tl-date">Jan 2023 – Jul 2023</span></div>
+            <div class="tl-co">HireTale · Bangalore, India</div>
+            <ul>
+              <li>Built an AI-powered hiring platform on Quarkus, GraphQL, and Hibernate with automated ETL — 70% less manual effort.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-num">05 — STACK</div>
+        <h2 class="sec-title">What I build with.</h2>
+      </div>
+      <div class="term">
+        <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-path">~/skills</span></div>
+        <div class="skill-groups">
+          <div>
+            <div class="skill-group-label">languages/</div>
+            <div class="skill-tags">
+              <span class="chip">java</span><span class="chip">c++</span><span class="chip">python</span><span class="chip">javascript</span><span class="chip">typescript</span><span class="chip">sql</span>
+            </div>
+          </div>
+          <div>
+            <div class="skill-group-label">backend/</div>
+            <div class="skill-tags">
+              <span class="chip">spring-boot</span><span class="chip">quarkus</span><span class="chip">hibernate</span><span class="chip">node.js</span><span class="chip">rest</span><span class="chip">graphql</span>
+            </div>
+          </div>
+          <div>
+            <div class="skill-group-label">distributed-systems/</div>
+            <div class="skill-tags">
+              <span class="chip">kafka</span><span class="chip">debezium-cdc</span><span class="chip">airflow</span><span class="chip">event-driven</span><span class="chip">fault-tolerance</span>
+            </div>
+          </div>
+          <div>
+            <div class="skill-group-label">data-and-cloud/</div>
+            <div class="skill-tags">
+              <span class="chip">postgresql</span><span class="chip">mongodb</span><span class="chip">neo4j</span><span class="chip">redis</span><span class="chip">docker</span><span class="chip">kubernetes</span><span class="chip">aws</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-num">06 — RECOGNITION</div>
+        <h2 class="sec-title">Awards.</h2>
+      </div>
+      <div class="term">
+        <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="term-path">~/awards.log</span></div>
+        <div class="term-body">
+          <div class="award-row"><div class="award-mark">[+]</div><div><div class="award-title">Budding Talent of the Year</div><div class="award-desc">John Deere — for founding work on KleeFlow, the road-building simulation platform.</div></div></div>
+          <div class="award-row"><div class="award-mark">[+]</div><div><div class="award-title">Distinguished Performance Rating</div><div class="award-desc">John Deere — recognized among the highest-performing engineers.</div></div></div>
+          <div class="award-row"><div class="award-mark">[+]</div><div><div class="award-title">INNOYOU Innovation Award</div><div class="award-desc">John Deere — AI-powered fleet-management automation solution.</div></div></div>
+          <div class="award-row"><div class="award-mark">[+]</div><div><div class="award-title">Patent Idea Recognition</div><div class="award-desc">John Deere — intelligent automation architecture proposal.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="wrap">
+      <div class="foot-title">&gt; connect --with=vyas<span class="blink">_</span></div>
+      <div class="foot-links">
+        <a href="mailto:amanvyas055@gmail.com">amanvyas055@gmail.com</a>
+        <a href="tel:+917284935089">+91 7284935089</a>
+        <a href="#">linkedin</a>
+        <a href="https://github.com/amanavvk" target="_blank">github</a>
+        <a href="#">leetcode</a>
+      </div>
+      <div class="copy">open to relocation worldwide — us · uk · eu · uae · australia · canada</div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  function animateCounter(el, target, duration){
+    const start = performance.now();
+    function step(now){
+      const p = Math.min((now - start) / duration, 1);
+      el.textContent = Math.round(p * target);
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  const plant = document.getElementById('plant');
+  const runBtn = document.getElementById('run-btn');
+  const plantLog = document.getElementById('plant-log');
+
+  if(plant && runBtn){
+    runBtn.addEventListener('click', () => {
+      if(plant.classList.contains('running')) return;
+      plant.classList.add('running');
+      runBtn.textContent = '■ SIMULATION RUNNING';
+      runBtn.disabled = true;
+
+      plant.querySelectorAll('.unit-status').forEach(el => { el.textContent = 'RUNNING'; });
+
+      plant.querySelectorAll('.tph-num').forEach(el => {
+        const target = parseInt(el.dataset.target, 10) || 0;
+        animateCounter(el, target, 1300);
+      });
+
+      const lines = [
+        '[excavator] bucket cycle engaged &rarr; loading feed',
+        '[conveyor] belt engaged &rarr; material transfer',
+        '[screener] vibrating deck active &rarr; separating',
+        '[conveyor] oversize routed &rarr; crusher inlet',
+        '[crusher] jaw engaged &rarr; reducing to spec',
+        '[conveyor] product discharge &rarr; stockpile',
+        '[plant] all units running <span class="ok">in parallel</span>'
+      ];
+      lines.forEach((line, i) => {
+        setTimeout(() => {
+          const d = document.createElement('div');
+          d.className = 'logline show';
+          d.innerHTML = '<span class="tag">&gt;</span> ' + line;
+          plantLog.appendChild(d);
+          plantLog.scrollTop = plantLog.scrollHeight;
+        }, i * 280);
+      });
+    });
+  }
+
+  const rrt = document.getElementById('rrt');
+  const rrtBtn = document.getElementById('rrt-btn');
+  const rrtLog = document.getElementById('rrt-log');
+
+  function animateDecimalCounter(el, from, to, decimals, duration){
+    const start = performance.now();
+    function step(now){
+      const p = Math.min((now - start) / duration, 1);
+      const val = from + (to - from) * p;
+      el.textContent = val.toFixed(decimals);
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  if(rrt && rrtBtn){
+    rrtBtn.addEventListener('click', () => {
+      if(rrt.classList.contains('running')) return;
+      rrt.classList.add('running');
+      rrtBtn.textContent = '■ PLANNER RUNNING';
+      rrtBtn.disabled = true;
+
+      rrt.querySelectorAll('.rrt-num').forEach(el => {
+        const from = parseFloat(el.dataset.from);
+        const to = parseFloat(el.dataset.to);
+        const dec = parseInt(el.dataset.dec, 10) || 0;
+        animateDecimalCounter(el, from, to, dec, 2400);
+      });
+
+      const lines = [
+        '[rrt*] sampling free space &rarr; new node candidates',
+        '[rrt*] steering via closed-form boundary-value solve',
+        '[rrt*] choose-parent pass &rarr; minimizing cost-to-come',
+        '[rrt*] rewiring local neighborhood',
+        '[rrt*] iteration budget growing &rarr; success rate <span class="ok">15% &rarr; 100%</span>',
+        '[rrt*] mean path cost converging &rarr; <span class="ok">26.9 &rarr; 24.5</span>',
+        '[planner] dynamically feasible trajectory <span class="ok">found</span>'
+      ];
+      lines.forEach((line, i) => {
+        setTimeout(() => {
+          const d = document.createElement('div');
+          d.className = 'logline show';
+          d.innerHTML = '<span class="tag">&gt;</span> ' + line;
+          rrtLog.appendChild(d);
+          rrtLog.scrollTop = rrtLog.scrollHeight;
+        }, i * 320);
+      });
+    });
+  }
+</script>
+
 </body>
 </html>
